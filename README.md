@@ -4,7 +4,7 @@
 
 A professional, responsive portfolio website built with a **Python/Flask** backend and **MongoDB** for data persistence. This project features a secure administrative dashboard for real-time project management and automated asset handling via **Cloudinary**.
 
-## **🚀 Key Features**
+
 
 * **Secure Admin Panel**: A protected dashboard for managing project entries and updating professional credentials.
 * **Dynamic Project Gallery**: Automatically renders projects stored in MongoDB, allowing for easy updates without redeploying code.
