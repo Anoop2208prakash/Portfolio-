@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-page">
+    <div class="login-card">
+        <h2>Admin Access</h2>
+        <form action="/login" method="POST">
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" name="username" required placeholder="Enter username">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" name="password" required placeholder="Enter password">
+            </div>
+            <button type="submit" class="btn btn-block">Login</button>
+        </form>
+        <p style="text-align: center; margin-top: 1rem;">
+            <a href="/" style="font-size: 0.8rem; color: #64748b;">&larr; Back to Home</a>
+        </p>
+    </div>
+</body>
+</html>

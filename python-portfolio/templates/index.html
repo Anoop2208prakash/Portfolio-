@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Full-Stack Developer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav>
+        <div class="logo"><strong>Anoop Prakash</strong></div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/admin">Admin</a>
+        </div>
+    </nav>
+
+    <header class="hero container">
+        <h1>Full-Stack Developer</h1>
+        <p>Building scalable systems with Python, MongoDB, and MERN.</p>
+        <div class="hero-actions">
+            <a href="#projects" class="btn">View My Work</a>
+            {% if cv_url != "#" %}
+                <a href="{{ cv_url }}" target="_blank" class="btn btn-secondary">📄 Download CV</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main class="container" id="projects">
+        <h2 class="section-title">Projects</h2>
+        <div class="projects-grid">
+            {% for project in projects %}
+            <div class="project-card">
+                <img src="{{ project.image_url }}" alt="{{ project.title }}">
+                <div class="project-card-content">
+                    <h3>{{ project.title }}</h3>
+                    <p>{{ project.description or "A full-stack implementation project." }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    <footer class="container">
+        <p>&copy; 2026 Anoop Prakash | Built with Flask & MongoDB</p>
+    </footer>
+</body>
+</html>

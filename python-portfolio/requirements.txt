@@ -1,0 +1,4 @@
+flask
+pymongo
+cloudinary
+python-dotenv

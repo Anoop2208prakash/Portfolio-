@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="admin-body">
+    <nav>
+        <div><strong>Admin Dashboard</strong></div>
+        <a href="/logout" style="color: #ff4d4d;">Logout</a>
+    </nav>
+
+    <div class="container">
+        <section class="admin-card">
+            <h3>Resume Management</h3>
+            <p>Upload your latest CV (PDF format only).</p>
+            <form action="/upload_cv" method="POST" enctype="multipart/form-data">
+                <input type="file" name="cv" accept=".pdf" required>
+                <button type="submit" class="btn btn-cv">Update CV</button>
+            </form>
+        </section>
+
+        <section class="admin-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3>Project List</h3>
+                <a href="/add" class="btn">+ Add Project</a>
+            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in projects %}
+                    <tr>
+                        <td><img src="{{ p.image_url }}" width="60" style="border-radius: 4px;"></td>
+                        <td>{{ p.title }}</td>
+                        <td>
+                            <a href="/delete/{{ p._id }}" class="delete-link" onclick="return confirm('Delete this project?')">Remove</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>
