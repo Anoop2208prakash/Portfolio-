@@ -1,5 +1,3 @@
----
-
 # **Dynamic Full-Stack Portfolio**
 
 A professional, responsive portfolio website built with a **Python/Flask** backend and **MongoDB** for data persistence. This project features a secure administrative dashboard for real-time project management and automated asset handling via **Cloudinary**.
