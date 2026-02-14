@@ -1,64 +1,61 @@
 :root {
     --primary: #2563eb;
-    --dark: #1e293b;
+    --secondary: #10b981;
+    --dark: #0f172a;
     --light: #f8fafc;
+    --danger: #ef4444;
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', system-ui, sans-serif;
     background-color: var(--light);
     color: var(--dark);
-    margin: 0;
-    padding: 0;
+    margin: 0; line-height: 1.5;
 }
 
+.container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+
+/* Navigation */
 nav {
-    background: var(--dark);
-    color: white;
-    padding: 1rem 5%;
-    display: flex;
-    justify-content: space-between;
+    background: white; border-bottom: 1px solid #e2e8f0;
+    padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center;
 }
 
-.container {
-    padding: 2rem 5%;
-}
+/* Hero Section */
+.hero { padding: 6rem 0; text-align: center; }
+.hero h1 { font-size: 3.5rem; margin-bottom: 1rem; color: var(--dark); }
+.hero-actions { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; }
 
-/* Portfolio Grid */
+/* Project Cards */
 .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem; margin: 3rem 0;
 }
-
 .project-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    background: white; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transition: 0.3s;
 }
+.project-card:hover { transform: translateY(-10px); }
+.project-card img { width: 100%; height: 200px; object-fit: cover; }
+.project-card-content { padding: 1.5rem; }
 
-.project-card:hover {
-    transform: translateY(-5px);
+/* Admin & Login Specifics */
+.admin-card {
+    background: white; padding: 2rem; border-radius: 12px;
+    margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+.admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+.admin-table th, .admin-table td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
 
-.project-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-}
+.login-page { background: var(--dark); height: 100vh; display: flex; align-items: center; justify-content: center; }
+.login-card { background: white; padding: 3rem; border-radius: 16px; width: 100%; max-width: 400px; }
 
-.project-card-content {
-    padding: 1.5rem;
-}
-
+/* Buttons */
 .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background: var(--primary);
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
+    padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none;
+    font-weight: 600; display: inline-block; cursor: pointer; border: none;
 }
+.btn-primary { background: var(--primary); color: white; }
+.btn-secondary { background: var(--secondary); color: white; }
+.btn-block { width: 100%; text-align: center; }
+.delete-link { color: var(--danger); text-decoration: none; font-size: 0.9rem; }
