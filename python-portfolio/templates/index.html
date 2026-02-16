@@ -3,46 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Full-Stack Developer</title>
+    <title>Anoop Prakash | Full-Stack Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <nav>
-        <div class="logo"><strong>Anoop Prakash</strong></div>
+        <div class="logo">ANOOP.<span class="accent-text">DEV</span></div>
         <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/admin">Admin</a>
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+            <a href="/admin" class="btn btn-primary" style="padding: 0.5rem 1.5rem; margin-left: 2rem;">
+                <i class="fa-solid fa-user-shield" style="margin-right: 8px;"></i> Admin
+            </a>
         </div>
     </nav>
 
-    <header class="hero container">
-        <h1>Full-Stack Developer</h1>
-        <p>Building scalable systems with Python, MongoDB, and MERN.</p>
-        <div class="hero-actions">
-            <a href="#projects" class="btn">View My Work</a>
-            {% if cv_url != "#" %}
-                <a href="{{ cv_url }}" target="_blank" class="btn btn-secondary">📄 Download CV</a>
-            {% endif %}
+    <header class="hero">
+        <div class="hero-content">
+            <h4>Hey! This is</h4>
+            <h1>Anoop <span class="accent-text">Prakash</span></h1>
+            <h3>Full-Stack Python Developer</h3>
+            <p>I build scalable, modern web applications using Python, Flask, and MongoDB. Let's turn your ideas into reality.</p>
+            
+            <div style="margin-top: 2rem;">
+                <a href="#" target="_blank" style="color: white; font-size: 1.8rem; margin-right: 1.5rem; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='#FF4C4C'" onmouseout="this.style.color='white'">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="#" target="_blank" style="color: white; font-size: 1.8rem; margin-right: 1.5rem; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='#FF4C4C'" onmouseout="this.style.color='white'">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                <a href="#" target="_blank" style="color: white; font-size: 1.8rem; text-decoration: none; transition: 0.3s;" onmouseover="this.style.color='#FF4C4C'" onmouseout="this.style.color='white'">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ profile_url }}" alt="Anoop Prakash">
         </div>
     </header>
 
-    <main class="container" id="projects">
-        <h2 class="section-title">Projects</h2>
+    <div class="stats-banner">
+        <div class="container stats-grid">
+            <div class="stat-item">
+                <h3><i class="fa-solid fa-briefcase" style="font-size: 0.7em; margin-right: 10px;"></i>3+</h3>
+                <p>Years Experience</p>
+            </div>
+            <div class="stat-item">
+                <h3><i class="fa-solid fa-rocket" style="font-size: 0.7em; margin-right: 10px;"></i>10+</h3>
+                <p>Live Projects</p>
+            </div>
+            <div class="stat-item">
+                <h3><i class="fa-solid fa-headset" style="font-size: 0.7em; margin-right: 10px;"></i>24/7</h3>
+                <p>Support</p>
+            </div>
+        </div>
+    </div>
+
+    <section id="about" class="section container">
+        <div class="about-grid">
+            <div>
+                <h2 style="margin-bottom: 0;">About <span class="accent-text">Me</span></h2>
+                <h4 style="margin-bottom: 1.5rem; color: var(--text-secondary);">Python & Web Developer</h4>
+                <p>Hi, I am Anoop, a passionate Full-Stack Developer based in India. I specialize in creating robust APIs with Flask and managing data with MongoDB.</p>
+                <p>I am always learning new technologies to build better and faster applications. When I'm not coding, I'm exploring new tech trends or contributing to open-source projects.</p>
+                
+                {% if cv_url != "#" %}
+                    <a href="{{ cv_url }}" target="_blank" class="btn btn-primary">
+                        <i class="fa-solid fa-file-arrow-down" style="margin-right: 8px;"></i> Download CV
+                    </a>
+                {% endif %}
+            </div>
+            <div>
+                <img src="{{ illus_url }}" alt="Developer Illustration" style="width: 100%; border-radius: 16px;">
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section container">
+        <div style="text-align: center; margin-bottom: 4rem;">
+            <h2>Technical <span class="accent-text">Expertise</span></h2>
+            <p>Proven skills developed through building full-stack systems and researching responsive web design.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; text-align: center;">
+            {% for skill in skills %}
+            <div class="project-card" style="padding: 2.5rem; border-radius: 20px;">
+                <i class="{{ skill.icon }}" style="font-size: 3.5rem; color: var(--accent); margin-bottom: 1rem;"></i>
+                <h4 style="margin: 0; font-size: 1.2rem;">{{ skill.name }}</h4>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="projects" class="section container" style="background-color: #0F1928; border-radius: 30px; padding: 4rem;">
+        <h2 style="text-align: center;">Recent <span class="accent-text">Projects</span></h2>
         <div class="projects-grid">
             {% for project in projects %}
             <div class="project-card">
                 <img src="{{ project.image_url }}" alt="{{ project.title }}">
                 <div class="project-card-content">
                     <h3>{{ project.title }}</h3>
-                    <p>{{ project.description or "A full-stack implementation project." }}</p>
+                    <p>{{ project.description or "A full-stack application built with Python and MongoDB." }}</p>
+                    <div style="margin-top: 1rem; font-size: 0.8rem; color: var(--accent);">
+                        <i class="fa-solid fa-code" style="margin-right: 5px;"></i> View Details
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-    </main>
+    </section>
 
-    <footer class="container">
-        <p>&copy; 2026 Anoop Prakash | Built with Flask & MongoDB</p>
+    <section id="contact" class="section container">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
+            <div>
+                <h2>Get In <span class="accent-text">Touch</span></h2>
+                <p style="margin-bottom: 2.5rem;">Have a project in mind or want to discuss my research on responsive web design? Send me a message!</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <div>
+                        <i class="fa-solid fa-envelope" style="color: var(--accent); margin-right: 15px;"></i>
+                        <span>anoop.prakash@example.com</span>
+                    </div>
+                    <div>
+                        <i class="fa-solid fa-location-dot" style="color: var(--accent); margin-right: 15px;"></i>
+                        <span>Jaipur, Rajasthan, India</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" style="padding: 3rem; border-radius: 20px;">
+                <form action="/send_message" method="POST">
+                    <div style="margin-bottom: 1.5rem;">
+                        <input type="text" name="name" placeholder="Full Name" required 
+                               style="width: 100%; padding: 1rem; background: #0B1120; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white;">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <input type="email" name="email" placeholder="Email Address" required 
+                               style="width: 100%; padding: 1rem; background: #0B1120; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white;">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <textarea name="message" rows="4" placeholder="Your Message" required 
+                                  style="width: 100%; padding: 1rem; background: #0B1120; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; color: white;"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-weight: 700;">
+                        <i class="fa-solid fa-paper-plane" style="margin-right: 10px;"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: #080D18; padding: 4rem 0; text-align: center; margin-top: 4rem; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="logo" style="margin-bottom: 1.5rem;">ANOOP.<span class="accent-text">DEV</span></div>
+        <div style="margin-bottom: 2rem;">
+            <a href="#" style="color: var(--text-secondary); margin: 0 1rem; font-size: 1.5rem;"><i class="fa-brands fa-github"></i></a>
+            <a href="#" style="color: var(--text-secondary); margin: 0 1rem; font-size: 1.5rem;"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="#" style="color: var(--text-secondary); margin: 0 1rem; font-size: 1.5rem;"><i class="fa-brands fa-instagram"></i></a>
+        </div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">&copy; 2026 Anoop Prakash. All rights reserved.</p>
     </footer>
 </body>
 </html>

@@ -2,51 +2,274 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Anoop Prakash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body class="admin-body">
-    <nav>
-        <div><strong>Admin Dashboard</strong></div>
-        <a href="/logout" style="color: #ff4d4d;">Logout</a>
-    </nav>
+    <style>
+        :root { --sidebar-width: 260px; }
+        body { display: flex; background-color: #080D18; margin: 0; color: white; }
+        
+        .sidebar {
+            width: var(--sidebar-width); height: 100vh;
+            background: #0B1120; border-right: 1px solid rgba(255,255,255,0.05);
+            padding: 2rem; position: fixed;
+        }
 
-    <div class="container">
-        <section class="admin-card">
-            <h3>Resume Management</h3>
-            <p>Upload your latest CV (PDF format only).</p>
-            <form action="/upload_cv" method="POST" enctype="multipart/form-data">
-                <input type="file" name="cv" accept=".pdf" required>
-                <button type="submit" class="btn btn-cv">Update CV</button>
+        .main-content {
+            margin-left: var(--sidebar-width); width: calc(100% - var(--sidebar-width));
+            padding: 3rem;
+        }
+
+        .admin-card {
+            background: #162032; border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px; padding: 2.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group label {
+            display: block; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 0.5rem;
+        }
+
+        .custom-file-input, .form-control {
+            background: #0B1120; border: 1px solid rgba(255,255,255,0.1);
+            padding: 0.8rem; border-radius: 12px; width: 100%;
+            color: #fff; transition: 0.3s; font-size: 0.8rem; box-sizing: border-box;
+        }
+
+        .custom-file-input { border-style: dashed; cursor: pointer; }
+        .custom-file-input:hover, .form-control:focus { border-color: var(--accent); outline: none; }
+
+        .preview-box {
+            width: 50px; height: 50px; border-radius: 6px;
+            object-fit: cover; border: 1px solid var(--accent);
+            display: none; margin-bottom: 8px;
+        }
+
+        .project-row, .message-row {
+            display: grid; grid-template-columns: 80px 1fr auto;
+            align-items: center; padding: 1.5rem;
+            background: rgba(255,255,255,0.02); border-radius: 12px;
+            margin-bottom: 1rem; border: 1px solid transparent; transition: 0.3s;
+        }
+
+        .project-row:hover, .message-row:hover {
+            border-color: var(--accent); background: rgba(255,255,255,0.04);
+        }
+
+        .message-row { grid-template-columns: 1fr auto; }
+
+        .spinner {
+            display: none; width: 18px; height: 18px;
+            border: 3px solid rgba(255,255,255,0.3); border-radius: 50%;
+            border-top-color: #fff; animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .nav-link i { margin-right: 12px; width: 20px; text-align: center; }
+
+        /* Icon Preview Circle */
+        .icon-detector {
+            width: 45px; height: 45px; background: #0B1120;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+            font-size: 1.2rem; color: var(--accent);
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo" style="margin-bottom: 3rem;">ANOOP.<span class="accent-text">CMS</span></div>
+        <div class="nav-links" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <a href="/" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">
+                <i class="fa-solid fa-house-user"></i>View Website
+            </a>
+            <a href="/admin" class="nav-link" style="color: var(--accent); text-decoration: none; font-weight: 700;">
+                <i class="fa-solid fa-gauge-high"></i>Dashboard
+            </a>
+            <a href="/add" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">
+                <i class="fa-solid fa-folder-plus"></i>Add Project
+            </a>
+            <hr style="opacity: 0.1;">
+            <a href="/logout" class="nav-link" style="color: #ef4444; text-decoration: none; font-size: 0.9rem;">
+                <i class="fa-solid fa-power-off"></i>Logout
+            </a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header style="margin-bottom: 3rem;">
+            <h1 style="font-size: 2rem;"><i class="fa-solid fa-sliders" style="margin-right: 15px; color: var(--accent);"></i>System <span class="accent-text">Control</span></h1>
+            <p style="color: var(--text-secondary);">Manage your full-stack presence from one secure portal.</p>
+        </header>
+
+        <section class="admin-card" style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; margin-bottom: 2rem;"><i class="fa-solid fa-user-gear" style="margin-right: 12px; color: var(--accent);"></i>Identity & <span class="accent-text">Assets</span></h2>
+            <form id="profileForm" action="/update_profile" method="POST" enctype="multipart/form-data">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 2.5rem;">
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-image-portrait"></i> Profile Photo</label>
+                        <img id="profile-prev" class="preview-box">
+                        <input type="file" name="profile_image" class="custom-file-input" accept="image/*" onchange="handlePreview(this, 'profile-prev')">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-wand-magic-sparkles"></i> Illustration</label>
+                        <img id="illus-prev" class="preview-box">
+                        <input type="file" name="illustration" class="custom-file-input" accept="image/*" onchange="handlePreview(this, 'illus-prev')">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-file-pdf"></i> Resume (PDF)</label>
+                        <div id="pdf-status" style="font-size: 0.7rem; color: var(--accent); margin-bottom: 8px; display: none;"><i class="fa-solid fa-circle-check"></i> PDF Ready</div>
+                        <input type="file" name="cv" class="custom-file-input" accept=".pdf" onchange="handlePDF(this)">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.2rem; border-radius: 12px; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; justify-content: center;">
+                    <i class="fa-solid fa-cloud-arrow-up" style="margin-right: 12px;"></i>
+                    <span>Synchronize Profile Assets</span>
+                    <div id="loader" class="spinner"></div>
+                </button>
             </form>
         </section>
 
-        <section class="admin-card">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3>Project List</h3>
-                <a href="/add" class="btn">+ Add Project</a>
+        <section class="admin-card" style="margin-bottom: 3rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem;"><i class="fa-solid fa-layer-group" style="margin-right: 12px; color: var(--accent);"></i>Project <span class="accent-text">Portfolio</span></h2>
+                <a href="/add" class="btn btn-primary" style="padding: 0.7rem 1.5rem; font-size: 0.8rem; border-radius: 8px;">
+                    <i class="fa-solid fa-plus" style="margin-right: 8px;"></i>New Entry
+                </a>
             </div>
-            <table class="admin-table">
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for p in projects %}
-                    <tr>
-                        <td><img src="{{ p.image_url }}" width="60" style="border-radius: 4px;"></td>
-                        <td>{{ p.title }}</td>
-                        <td>
-                            <a href="/delete/{{ p._id }}" class="delete-link" onclick="return confirm('Delete this project?')">Remove</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="project-list">
+                {% for p in projects %}
+                <div class="project-row">
+                    <img src="{{ p.image_url }}" alt="Preview" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">
+                    <div style="padding-left: 1.5rem;">
+                        <div style="font-weight: 700; font-size: 1.1rem;">{{ p.title }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);"><i class="fa-solid fa-fingerprint"></i> UUID: {{ p._id }}</div>
+                    </div>
+                    <div>
+                        <a href="/delete/{{ p._id }}" class="accent-text" style="text-decoration: none; font-weight: 800; font-size: 0.75rem;" onclick="return confirm('Permanently delete this project?')">
+                            <i class="fa-solid fa-trash-can" style="margin-right: 5px;"></i>[ DELETE ]
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </section>
-    </div>
+
+        <section class="admin-card" style="margin-bottom: 3rem;">
+            <h2 style="font-size: 1.5rem; margin-bottom: 2rem;"><i class="fa-solid fa-microchip" style="margin-right: 12px; color: var(--accent);"></i>Skills <span class="accent-text">Manager</span></h2>
+            
+            <form action="/add_skill" method="POST" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 12px;">
+                <div class="icon-detector" id="icon-preview">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <input type="text" name="skill_name" id="skill-name-input" class="form-control" placeholder="Type Skill Name (e.g. React, Python...)" required style="flex: 2;">
+                <input type="hidden" name="icon_class" id="skill-icon-input" value="fa-solid fa-code">
+                
+                <button type="submit" class="btn btn-primary" style="white-space: nowrap; padding: 0.8rem 1.5rem; border-radius: 10px;">+ Add Skill</button>
+            </form>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem;">
+                {% for skill in skills %}
+                <div style="display: flex; justify-content: space-between; align-items: center; background: #0B1120; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                    <span><i class="{{ skill.icon }}" style="margin-right: 10px; color: var(--accent);"></i>{{ skill.name }}</span>
+                    <a href="/delete_skill/{{ skill._id }}" class="accent-text" onclick="return confirm('Delete this skill?')">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section class="admin-card">
+            <h2 style="font-size: 1.5rem; margin-bottom: 2rem;"><i class="fa-solid fa-inbox" style="margin-right: 12px; color: var(--accent);"></i>Message <span class="accent-text">Inbox</span></h2>
+            <div class="message-list">
+                {% for msg in messages %}
+                <div class="message-row">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 700; color: var(--accent);">{{ msg.name }}</span>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary);"><i class="fa-solid fa-envelope"></i> {{ msg.email }}</span>
+                        </div>
+                        <p style="font-size: 0.95rem; margin: 0;">{{ msg.message }}</p>
+                    </div>
+                    <a href="/delete_message/{{ msg._id }}" class="accent-text" onclick="return confirm('Delete message?')">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Automatic Icon Mapping Table
+        const iconMapping = {
+            "python": "fa-brands fa-python",
+            "react": "fa-brands fa-react",
+            "javascript": "fa-brands fa-js",
+            "js": "fa-brands fa-js",
+            "html": "fa-brands fa-html5",
+            "css": "fa-brands fa-css3-alt",
+            "node": "fa-brands fa-node-js",
+            "nodejs": "fa-brands fa-node-js",
+            "mongodb": "fa-solid fa-leaf", // Often used for MongoDB
+            "database": "fa-solid fa-database",
+            "mysql": "fa-solid fa-server",
+            "github": "fa-brands fa-github",
+            "tailwind": "fa-solid fa-wind",
+            "sass": "fa-brands fa-sass",
+            "typescript": "fa-solid fa-code",
+            "ts": "fa-solid fa-code",
+            "vite": "fa-solid fa-bolt",
+            "flask": "fa-solid fa-flask",
+            "docker": "fa-brands fa-docker",
+            "aws": "fa-brands fa-aws"
+        };
+
+        const skillInput = document.getElementById('skill-name-input');
+        const hiddenIconInput = document.getElementById('skill-icon-input');
+        const iconPreview = document.getElementById('icon-preview');
+
+        skillInput.addEventListener('input', (e) => {
+            const val = e.target.value.toLowerCase().trim();
+            // Default icon if not found
+            let detectedIcon = "fa-solid fa-code";
+
+            // Check if any key in mapping exists in the typed string
+            for (const key in iconMapping) {
+                if (val.includes(key)) {
+                    detectedIcon = iconMapping[key];
+                    break;
+                }
+            }
+
+            // Update UI and Hidden Form Field
+            hiddenIconInput.value = detectedIcon;
+            iconPreview.innerHTML = `<i class="${detectedIcon}"></i>`;
+        });
+
+        // Other Previews
+        function handlePreview(input, imgId) {
+            const file = input.files[0];
+            const preview = document.getElementById(imgId);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => { preview.src = e.target.result; preview.style.display = 'block'; }
+                reader.readAsDataURL(file);
+            }
+        }
+        function handlePDF(input) {
+            const status = document.getElementById('pdf-status');
+            if (input.files.length > 0) { status.style.display = 'block'; }
+        }
+        document.getElementById('profileForm').onsubmit = function() {
+            document.getElementById('loader').style.display = 'inline-block';
+        };
+    </script>
 </body>
 </html>

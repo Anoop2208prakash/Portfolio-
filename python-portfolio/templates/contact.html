@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Inquiry | Anoop Prakash</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        /* Standalone Page Styles */
+        body {
+            background-color: #080D18;
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            line-height: 1.6;
+        }
+
+        .contact-wrapper {
+            padding: 8rem 0;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        /* Glassmorphism Contact Card */
+        .contact-form-card {
+            background: #162032;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border-left: 3px solid var(--accent);
+            transition: 0.3s;
+        }
+
+        .info-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 76, 76, 0.1);
+            color: var(--accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 1.5rem;
+        }
+
+        .info-text h4 {
+            margin: 0;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+        }
+
+        .info-text p {
+            margin: 0;
+            font-weight: 600;
+            color: white;
+        }
+
+        /* Form Controls */
+        .form-group { margin-bottom: 1.5rem; }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 0.6rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: #0B1120;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(255, 76, 76, 0.1);
+        }
+
+        @media (max-width: 992px) {
+            .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .contact-wrapper { padding: 4rem 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">ANOOP.<span class="accent-text">DEV</span></div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/#projects">Projects</a>
+            <a href="/admin" class="btn btn-primary" style="padding: 0.5rem 1.5rem; margin-left: 2rem;">
+                <i class="fa-solid fa-lock" style="margin-right: 8px;"></i>Admin
+            </a>
+        </div>
+    </nav>
+
+    <main class="contact-wrapper container">
+        <div class="contact-grid">
+            
+            <div class="contact-info">
+                <h1 style="font-size: 3rem; margin-bottom: 1rem;">Let's <span class="accent-text">Connect</span></h1>
+                <p style="color: var(--text-secondary); font-size: 1.1rem; margin-bottom: 3rem;">
+                    Whether you have a question about my **Hostel Management System**, want to discuss **Full-Stack Development**, or collaborate on a new project—I'm just a message away.
+                </p>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
+                    <div class="info-text">
+                        <h4>Email Address</h4>
+                        <p>anoop.prakash@example.com</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                    <div class="info-text">
+                        <h4>Current Location</h4>
+                        <p>Jaipur, Rajasthan, India</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                    <div class="info-text">
+                        <h4>Available for</h4>
+                        <p>Freelance & Full-time Roles</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form-card">
+                <form action="/send_message" method="POST">
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-user" style="margin-right: 8px;"></i> Full Name</label>
+                        <input type="text" name="name" class="form-input" placeholder="Your Name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-at" style="margin-right: 8px;"></i> Email Address</label>
+                        <input type="email" name="email" class="form-input" placeholder="email@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fa-solid fa-message" style="margin-right: 8px;"></i> Message</label>
+                        <textarea name="message" class="form-input" rows="5" placeholder="How can I help you today?" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1.2rem; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;">
+                        Send Message <i class="fa-solid fa-paper-plane" style="margin-left: 10px;"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <footer style="background: #080D18; padding: 4rem 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05);">
+        <div class="logo" style="margin-bottom: 1.5rem;">ANOOP.<span class="accent-text">DEV</span></div>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">&copy; 2026 Anoop Prakash. Portfolio powered by Python & MongoDB.</p>
+    </footer>
+
+</body>
+</html>

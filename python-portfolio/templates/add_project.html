@@ -1,24 +1,190 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Add New Project</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Project | Anoop Prakash</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        :root { --sidebar-width: 260px; }
+        body { display: flex; background-color: #080D18; margin: 0; color: white; }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background: #0B1120;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            padding: 2rem;
+            position: fixed;
+        }
+
+        .main-content {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            padding: 3rem;
+        }
+
+        .admin-card {
+            background: #162032;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 800px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group { margin-bottom: 1.5rem; }
+
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group label i { margin-right: 8px; color: var(--accent); }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: #0B1120;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(255, 76, 76, 0.2);
+        }
+
+        .custom-file-input {
+            background: #0B1120;
+            border: 1px dashed rgba(255,255,255,0.2);
+            padding: 0.8rem;
+            border-radius: 12px;
+            width: 100%;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.8rem;
+        }
+
+        .custom-file-input:hover { border-color: var(--accent); }
+
+        .preview-box {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid var(--accent);
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .nav-link i { margin-right: 12px; width: 20px; text-align: center; }
+    </style>
 </head>
 <body>
-    <h1>Upload a New Project</h1>
-    
-    <form action="/add" method="POST" enctype="multipart/form-data">
-        <div>
-            <label>Project Title:</label><br>
-            <input type="text" name="title" required placeholder="e.g. IMS System">
+
+    <aside class="sidebar">
+        <div class="logo" style="margin-bottom: 3rem;">ANOOP.<span class="accent-text">CMS</span></div>
+        <div class="nav-links" style="display: flex; flex-direction: column; gap: 1.5rem;">
+            <a href="/" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">
+                <i class="fa-solid fa-house-user"></i>View Website
+            </a>
+            <a href="/admin" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">
+                <i class="fa-solid fa-gauge-high"></i>Dashboard
+            </a>
+            <a href="/add" class="nav-link" style="color: var(--accent); text-decoration: none; font-weight: 700;">
+                <i class="fa-solid fa-folder-plus"></i>Add Project
+            </a>
+            <hr style="opacity: 0.1;">
+            <a href="/logout" class="nav-link" style="color: #ef4444; text-decoration: none; font-size: 0.9rem;">
+                <i class="fa-solid fa-power-off"></i>Logout
+            </a>
         </div>
-        <br>
-        <div>
-            <label>Project Image:</label><br>
-            <input type="file" name="image" accept="image/*" required>
-        </div>
-        <br>
-        <button type="submit">Upload to Portfolio</button>
-        <a href="/admin">Cancel</a>
-    </form>
+    </aside>
+
+    <main class="main-content">
+        <header style="margin-bottom: 3rem;">
+            <h1 style="font-size: 2rem;"><i class="fa-solid fa-plus-circle" style="margin-right: 15px; color: var(--accent);"></i>New <span class="accent-text">Project</span></h1>
+            <p style="color: var(--text-secondary);">Expand your showcase by adding a new full-stack entry.</p>
+        </header>
+
+        <section class="admin-card">
+            <form id="addProjectForm" action="/add" method="POST" enctype="multipart/form-data">
+                
+                <div class="input-group">
+                    <label for="title"><i class="fa-solid fa-heading"></i> Project Title</label>
+                    <input type="text" id="title" name="title" class="form-control" placeholder="e.g. Institute Management System" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="description"><i class="fa-solid fa-align-left"></i> Project Description</label>
+                    <textarea id="description" name="description" class="form-control" rows="4" placeholder="Briefly explain the tech stack and core functionality..."></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fa-solid fa-image"></i> Project Thumbnail</label>
+                    <img id="project-prev" class="preview-box">
+                    <input type="file" name="image" class="custom-file-input" accept="image/*" required onchange="handlePreview(this, 'project-prev')">
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex: 2; padding: 1.2rem; border-radius: 12px; text-transform: uppercase; letter-spacing: 2px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-cloud-arrow-up" style="margin-right: 12px;"></i>
+                        <span>Publish Project</span>
+                        <div id="loader" class="spinner"></div>
+                    </button>
+                    <a href="/admin" class="btn" style="flex: 1; text-align: center; border: 1px solid rgba(255,255,255,0.1); padding: 1.2rem; border-radius: 12px; color: var(--text-secondary); text-decoration: none; display: flex; align-items: center; justify-content: center;">
+                        <i class="fa-solid fa-xmark" style="margin-right: 8px;"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script>
+        function handlePreview(input, imgId) {
+            const file = input.files[0];
+            const preview = document.getElementById(imgId);
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        document.getElementById('addProjectForm').onsubmit = function() {
+            document.getElementById('loader').style.display = 'inline-block';
+            this.querySelector('button').style.opacity = '0.7';
+            this.querySelector('button').style.pointerEvents = 'none';
+        };
+    </script>
 </body>
 </html>
